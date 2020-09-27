@@ -17,7 +17,7 @@ import {
   import DeleteIcon from '@material-ui/icons/Delete';
   import { makeStyles } from '@material-ui/core/styles';
   import { useHistory } from 'react-router-dom';
-  // import Container from '@material-ui/core/Container';
+  import Container from '@material-ui/core/Container';
   // import data from '../Data';
 
 
@@ -29,6 +29,9 @@ import {
       backgroundColor: '#FAFAFA',
       minWidth: 375,
       paddingBottom: 8,
+      [theme.breakpoints.down('md')]: {
+        minWidth: 320,
+    },
     },
    
     textField: {
@@ -36,6 +39,12 @@ import {
       marginRight: theme.spacing(1), 
       width: '95%', 
       display: 'flex',
+    },
+    textFieldDate: {
+      marginLeft: theme.spacing(1),
+      marginRight: theme.spacing(1), 
+      display: 'flex',
+      width: 190,
     },
      typography: {
      display: 'flex',
@@ -47,6 +56,12 @@ import {
       // overflow: 'hidden',
       // padding: theme.spacing(0, 3),
       marginTop: theme.spacing(1),
+    },
+    cardActions: {
+      display: 'flex',
+      [theme.breakpoints.down('md')]: {
+        flexDirection: 'column-reverse',
+    },
     },
   }));
 
@@ -83,6 +98,13 @@ const Edit = (props)=> {
   }
   
   function Save() {
+  
+    if(todos.text.trim().length < 5) {
+      alert('Wpisz tekst więcej niż 5 znaków');
+      return;
+  }
+
+
     let data = getTodos();
     let newTodos = data.map((item)=> { if(item.id === parseInt(id)) { return todos; } 
                             else { return item;} });
@@ -120,7 +142,7 @@ newTodos= [...data.filter((item)=> item.id !== parseInt(id))];
    setTodos(newTodos);
   }
 
-      return <div className={classes.container}> 
+      return <Container className={classes.container}  maxWidth="sm" > 
            <Grid container spacing={3} style={{ display: 'flex', justifyContent: 'center'}} >
               
   <Grid item>
@@ -141,7 +163,9 @@ newTodos= [...data.filter((item)=> item.id !== parseInt(id))];
    
             </CardContent>
                    
-          <CardActions disableSpacing>
+          <CardActions disableSpacing >
+            <div className={classes.cardActions}>
+              <div style={{display: 'flex'}}>
                 <IconButton aria-label="done" onClick={()=>Done(todos.id)}>
                       <CheckCircleOutlineIcon />
                 </IconButton>
@@ -153,24 +177,25 @@ newTodos= [...data.filter((item)=> item.id !== parseInt(id))];
                 <IconButton aria-label="delete" onClick={()=>Delete(todos.id)}>
                     <DeleteIcon />
                 </IconButton>
-                    
+                </div>
               <TextField style={{display: 'flex'}}
                   id="datetime-local"
                   label="End"
                   type="datetime-local"
                  defaultValue={todos.end}
                    value={todos.end || ''}
-                  className={classes.textField}
+                  className={classes.textFieldDate}
                   onChange={handleData}
                   InputLabelProps={{
                     shrink: true,
                   }}
                 />
+                </div>
           </CardActions>
     </Card>
   </Grid>
   </Grid>  
-</div>;
+</Container>;
 }
 
 export default Edit;

@@ -17,7 +17,7 @@ function App() {
       <AppBar color="primary" position="static">
       <Toolbar>
       <TypoGraphy variant="subtitle1" color="inherit">
-              My todo
+              Bart todo
       </TypoGraphy>
           <NavBar />
           </Toolbar>

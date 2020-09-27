@@ -13,7 +13,7 @@ import {
   import TextField from '@material-ui/core/TextField';
   import SaveIcon from '@material-ui/icons/Save';
   import { makeStyles } from '@material-ui/core/styles';
-  // import Container from '@material-ui/core/Container';
+  import Container from '@material-ui/core/Container';
   import Typography from '@material-ui/core/Typography';
 
   const useStyles = makeStyles((theme) => ({
@@ -21,6 +21,9 @@ import {
       backgroundColor: '#FAFAFA',
       minWidth: 375,
       paddingBottom: 8,
+        [theme.breakpoints.down('md')]: {
+          minWidth: 320,
+        },
     },
    
     textField: {
@@ -28,6 +31,12 @@ import {
       marginRight: theme.spacing(1), 
       width: '95%', 
       display: 'flex',
+    },
+    textFieldDate: {
+      marginLeft: theme.spacing(1),
+      marginRight: theme.spacing(1), 
+      display: 'flex',
+      width: 190,
     },
     typography: {
       display: 'flex',
@@ -54,18 +63,24 @@ const Create = ()=> {
     let today = new Date();
 
     const date = today.getFullYear()+'-'+((today.getMonth()+1)<10 ? ('0' + (today.getMonth()+1)) : (today.getMonth()+1)) +'-'+today.getDate();
-    const time = today.getHours() + ":" + (today.getMinutes()<10 ? ('0' + today.getMinutes()): today.getMinutes());
+    const time = (today.getHours() < 10 ? ('0' + today.getHours()) : today.getHours()) + ":" + (today.getMinutes()<10 ? ('0' + today.getMinutes()): today.getMinutes());
     const datetime = date + ' ' + time;
 
     let tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
     
     const date_end = tomorrow.getFullYear()+'-'+((tomorrow.getMonth()+1)<10 ? ('0' + (tomorrow.getMonth()+1)) : (tomorrow.getMonth()+1)) +'-'+tomorrow.getDate();
-    const time_end = tomorrow.getHours() + ":" + (tomorrow.getMinutes()<10 ? ('0' + tomorrow.getMinutes()): tomorrow.getMinutes());
+    const time_end = (tomorrow.getHours() < 10 ? ('0' + tomorrow.getHours()) : tomorrow.getHours()) + ":" + (tomorrow.getMinutes()<10 ? ('0' + tomorrow.getMinutes()): tomorrow.getMinutes());
     const datetime2 = date_end + 'T' + time_end;
    
   function Save() {
     let maxId = 1;
+   
+    if(text.trim().length < 5) {
+        alert('Wpisz tekst dłuższy niż 5 znaków');
+        return;
+    }
+
     if(todos) {
         maxId = Math.max(...todos.map(note => note.id), 0);
     }
@@ -116,7 +131,7 @@ const Create = ()=> {
   },[datetime2])
 
 
-      return <div className={classes.container} maxWidth="sm" > 
+      return <Container className={classes.container} maxWidth="sm" > 
            <Grid container spacing={3} style={{ display: 'flex', justifyContent: 'center'}} >
               
   <Grid item>
@@ -137,7 +152,7 @@ const Create = ()=> {
    
             </CardContent>
                    
-          <CardActions disableSpacing>
+          <CardActions disableSpacing style={{display: 'flex',justifyContent: 'space-between'}}>
                
   
                 <IconButton aria-label="save" onClick={Save}> 
@@ -145,23 +160,21 @@ const Create = ()=> {
                 </IconButton>
   
                     
-              <TextField style={{display: 'flex'}}
+              <TextField  className={classes.textFieldDate}
                   id="datetime-local"
                   label="End"
                   type="datetime-local"
-                 // defaultValue={datetime_end}
-                  className={classes.textField}
+                  defaultValue={datetime2}
                   onChange={handleData}
-                  value={datetime_end}
                   InputLabelProps={{
-                    shrink: true,
+                  shrink: true,
                   }}
                 />
           </CardActions>
     </Card>
   </Grid>
   </Grid>  
-</div>;
+</Container>;
 }
 
 export default Create;
