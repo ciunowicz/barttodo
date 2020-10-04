@@ -69,10 +69,10 @@ const Create = ()=> {
     let tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
     
-    const date_end = tomorrow.getFullYear()+'-'+((tomorrow.getMonth()+1)<10 ? ('0' + (tomorrow.getMonth()+1)) : (tomorrow.getMonth()+1)) +'-'+tomorrow.getDate();
+    const date_end = tomorrow.getFullYear()+'-'+((tomorrow.getMonth()+1)<10 ? ('0' + (tomorrow.getMonth()+1)) : (tomorrow.getMonth()+1)) +'-'+ (tomorrow.getDate()<10 ? ('0' + tomorrow.getDate()) : (tomorrow.getDate()));
     const time_end = (tomorrow.getHours() < 10 ? ('0' + tomorrow.getHours()) : tomorrow.getHours()) + ":" + (tomorrow.getMinutes()<10 ? ('0' + tomorrow.getMinutes()): tomorrow.getMinutes());
     const datetime2 = date_end + 'T' + time_end;
-   
+   console.log(datetime2)
   function Save() {
     let maxId = 1;
    
