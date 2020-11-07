@@ -1,6 +1,7 @@
 import React , { useState, useEffect  } from 'react';
 import { useHistory } from 'react-router-dom';
 // import data from '../Data';
+import {dbHost, maxLink, addLink} from '../Db';
 
 import {
     Card,
@@ -72,9 +73,26 @@ const Create = ()=> {
     const date_end = tomorrow.getFullYear()+'-'+((tomorrow.getMonth()+1)<10 ? ('0' + (tomorrow.getMonth()+1)) : (tomorrow.getMonth()+1)) +'-'+ (tomorrow.getDate()<10 ? ('0' + tomorrow.getDate()) : (tomorrow.getDate()));
     const time_end = (tomorrow.getHours() < 10 ? ('0' + tomorrow.getHours()) : tomorrow.getHours()) + ":" + (tomorrow.getMinutes()<10 ? ('0' + tomorrow.getMinutes()): tomorrow.getMinutes());
     const datetime2 = date_end + 'T' + time_end;
-   console.log(datetime2)
-  function Save() {
-    let maxId = 1;
+  
+
+   
+
+   const dbSave = (todo) => {
+     
+    fetch(dbHost + addLink,{
+      method: 'post',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({...todo})
+    })
+    .then(function(response) {
+      console.log(response)
+      return response.json();
+    });
+
+  }
+
+  async function Save() {
+    /* let maxId = 1;
    
     if(text.trim().length < 5) {
         alert('Wpisz tekst dłuższy niż 5 znaków');
@@ -103,7 +121,18 @@ const Create = ()=> {
         if(todos && todos.length > 0) {
     setTodos([rec,...todos]);
         } else {  setTodos([rec])}
+ */
 
+
+const response = await fetch(dbHost + maxLink);
+const todo = await response.json();
+
+let idx = todo[0].id;
+
+let maxId = idx + 1;
+
+let rec = {id: maxId, text: text, created: datetime, end: datetime_end, completed: false};
+dbSave(rec);
 
         history.push('/');
   

@@ -4,6 +4,7 @@ import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import { dbHost } from '../Db';
 // import data from '../Data';
 
 const useStyles = makeStyles((theme) => ({
@@ -42,16 +43,21 @@ export default function TodoList() {
 
   useEffect(() => {
     let todosData = [];
-    if (typeof(Storage) !== "undefined") {
+   /*  if (typeof(Storage) !== "undefined") {
    
       if (localStorage.getItem("myTodo")) {
              todosData = JSON.parse(localStorage.getItem("myTodo"));
       } 
       
-    }
-    console.log(todosData)
+    } */
+
+fetch(dbHost)
+.then(response => response.json())
+.then(data => setTodos(data));
+
+  //  console.log(todosData)
     //setTodos(data);
-   setTodos(todosData);
+  // setTodos(todosData);
     
     },[]);
 
